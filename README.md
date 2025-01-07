@@ -22,4 +22,4 @@ Oh, S., Joo, Y., Park, S., Hong, J., & Heo, J. (2024). *Improving deep learning-
 
 ## Dataset and Pre-trained Models
 
-The dataset and pre-trained models used in this research can be downloaded from the following link: 10.5281/zenodo.14608083
+The dataset and pre-trained models used in this research can be downloaded from the following link: [10.5281/zenodo.14608083](https://doi.org/10.5281/zenodo.14608083)
