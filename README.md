@@ -12,7 +12,7 @@ The work is associated with the paper **"Improving Deep Learning-Based Precipita
 - CLI single-model and weighted-ensemble evaluation scripts
 - A small sample visualization image under `examples/visualizations/`
 
-Large raw data, generated datasets, trained checkpoints, Excel reports, and bulk visualizations are intentionally not stored in git. See [DATA_POLICY.md](DATA_POLICY.md).
+The large dataset and trained checkpoints are distributed separately through Zenodo. This repository focuses on source code, configuration examples, documentation, and a compact visualization sample.
 
 ## Example Results
 
@@ -38,7 +38,7 @@ The dataset and pretrained models used in the paper are available from Zenodo:
 
 [https://doi.org/10.5281/zenodo.14608083](https://doi.org/10.5281/zenodo.14608083)
 
-Recommended local directory layout:
+Recommended local directory layout for reproduction:
 
 ```text
 data/
@@ -49,8 +49,6 @@ data/
 checkpoints/
 outputs/
 ```
-
-These paths are ignored by git.
 
 ## Preprocessing
 
@@ -103,14 +101,11 @@ python Code/main.py \
 
 Available model names are `unet`, `seunet`, `attunet`, `dualattunet`, and `sarunet`.
 
-Weights & Biases logging is disabled by default. To enable it, set your key in the environment and pass `--wandb`:
+Weights & Biases logging is disabled by default. To enable it, set `WANDB_API_KEY` in your environment and pass `--wandb`:
 
 ```bash
-export WANDB_API_KEY="your-key"
 python Code/main.py ... --wandb --wandb_project precipitation-nowcasting
 ```
-
-Do not commit W&B keys or generated `wandb/` directories.
 
 ## Evaluation
 
@@ -127,6 +122,8 @@ python Code/evaluate_models.py \
 For older full-model `.pth` files created with `torch.save(model, path)`, add `--allow-full-model` only when the checkpoint is trusted.
 
 ## Ensemble Evaluation
+
+The included `configs/model_weights.example.json` describes a four-model ensemble example. If you change the model list, update the ensemble weights so the number of weights matches the number of configured models.
 
 Evaluate one weighted ensemble:
 
@@ -149,7 +146,7 @@ python Code/evaluate_ensemble.py \
   --output outputs/ensemble_grid_search_results.xlsx
 ```
 
-Generated predictions and visualizations should stay under `outputs/`, not in git.
+Evaluation reports and generated visualizations are written under `outputs/` by default.
 
 ## Citation
 
