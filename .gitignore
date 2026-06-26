@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Local data and generated artifacts
+data/
+datasets/
+raw_data/
+outputs/
+results/
+visualization/
+checkpoints/
+wandb/
+
+# Large or sensitive model/data files
+*.bin
+*.bin.gz
+*.tar
+*.tar.gz
+*.npy
+*.npz
+*.pkl
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.xlsx
+
+# Keep intentionally small public examples.
+!examples/visualizations/*.png

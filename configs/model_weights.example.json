@@ -1,0 +1,36 @@
+{
+  "models": [
+    {
+      "name": "UNet",
+      "architecture": "unet",
+      "path": "checkpoints/unet_state_dict.pth",
+      "n_channels": 6,
+      "n_classes": 1,
+      "bilinear": false
+    },
+    {
+      "name": "SEUNet",
+      "architecture": "seunet",
+      "path": "checkpoints/seunet_state_dict.pth",
+      "n_channels": 6,
+      "n_classes": 1,
+      "bilinear": false
+    },
+    {
+      "name": "AttUNet",
+      "architecture": "attunet",
+      "path": "checkpoints/attunet_state_dict.pth",
+      "n_channels": 6,
+      "n_classes": 1,
+      "bilinear": false
+    },
+    {
+      "name": "DualAttUNet",
+      "architecture": "dualattunet",
+      "path": "checkpoints/dualattunet_state_dict.pth",
+      "n_channels": 6,
+      "n_classes": 1,
+      "bilinear": false
+    }
+  ]
+}
