@@ -18,7 +18,7 @@ Large raw data, generated datasets, trained checkpoints, Excel reports, and bulk
 
 Sample from 2020-09-03 03:05:
 
-![Precipitation nowcasting sample](examples/visualizations/ensemble_202009030305.jpg)
+![Precipitation nowcasting sample](examples/visualizations/ensemble_202009030305.png)
 
 ## Installation
 
