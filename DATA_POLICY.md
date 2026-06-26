@@ -1,26 +1,28 @@
-# Data and Artifact Policy
+# Data and Artifact Scope
 
-This repository is intended to contain source code, documentation, configuration examples, and a few small illustrative images only.
+This repository contains source code, documentation, configuration examples, and a compact illustrative visualization.
 
-Do not commit:
+## External Artifacts
 
-- raw KMA HSR archives or extracted `.bin.gz` files
-- generated datasets, checkpoints, Excel reports, or bulk visualizations
-- local absolute paths, API keys, W&B credentials, access tokens, or private experiment metadata
-- notebooks with executed outputs that reveal local paths, logs, machine names, or private file names
+The following artifacts are distributed or generated outside the repository:
+
+- raw KMA HSR archives and extracted `.bin.gz` files
+- generated datasets and train/validation/test splits
+- trained checkpoints and model weight files
+- Excel reports, bulk predictions, and visualization batches
+- private run metadata such as local paths, W&B credentials, and access tokens
+- executed notebook outputs that expose local logs, machine names, or private file names
 
 Recommended local layout:
 
 ```text
 data/
-  archives/        # original .tar.gz files, ignored by git
-  raw/             # extracted .bin.gz files, ignored by git
-  dBZ_png/         # converted PNG files, ignored by git
-  dataset_.../     # train/valid/test split, ignored by git
-checkpoints/       # model weights, ignored by git
-outputs/           # evaluation reports and generated visualizations, ignored by git
+  archives/
+  raw/
+  dBZ_png/
+  dataset_.../
+checkpoints/
+outputs/
 ```
 
-The README links to the public data source. Keep large data and trained weights in an external data/model registry such as Zenodo, Hugging Face, institutional storage, or a GitHub Release when licensing allows it.
-
-If a credential was ever committed, revoke and rotate it at the provider first. Git history cleanup reduces exposure in the repository, but it does not guarantee that external caches, forks, clones, or provider-side logs have forgotten the value.
+The README links to the public Zenodo record for the dataset and pretrained models. Additional releases can use an external data/model registry such as Zenodo, Hugging Face, institutional storage, or GitHub Releases when licensing allows it.
