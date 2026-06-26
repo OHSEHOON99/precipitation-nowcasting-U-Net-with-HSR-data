@@ -41,3 +41,4 @@ wandb/
 
 # Keep intentionally small public examples.
 !examples/visualizations/*.png
+!examples/visualizations/*.jpg

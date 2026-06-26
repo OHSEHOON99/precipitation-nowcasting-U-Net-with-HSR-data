@@ -10,17 +10,15 @@ The work is associated with the paper **"Improving Deep Learning-Based Precipita
 - HSR `.tar.gz` extraction and `.bin.gz` to cropped 16-bit PNG preprocessing script
 - CLI training entry point with optional Weights & Biases logging
 - CLI single-model and weighted-ensemble evaluation scripts
-- Small sample visualization images under `examples/visualizations/`
+- A small sample visualization image under `examples/visualizations/`
 
 Large raw data, generated datasets, trained checkpoints, Excel reports, and bulk visualizations are intentionally not stored in git. See [DATA_POLICY.md](DATA_POLICY.md).
 
 ## Example Results
 
-| Sample | Visualization |
-| --- | --- |
-| 2020-09-03 03:05 | ![2020 sample](examples/visualizations/ensemble_202009030305.png) |
-| 2021-10-15 16:20 | ![2021 sample](examples/visualizations/ensemble_202110151620.png) |
-| 2022-10-09 13:10 | ![2022 sample](examples/visualizations/ensemble_202210091310.png) |
+Sample from 2020-09-03 03:05:
+
+![Precipitation nowcasting sample](examples/visualizations/ensemble_202009030305.jpg)
 
 ## Installation
 
