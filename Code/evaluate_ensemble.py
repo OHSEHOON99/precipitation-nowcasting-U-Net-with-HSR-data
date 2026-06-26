@@ -8,6 +8,8 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.cm import ScalarMappable
+from matplotlib.colors import Normalize
 import numpy as np
 import torch
 from PIL import Image
@@ -61,39 +63,62 @@ def visualize_sample(inputs, targets, model_outputs, ensemble_prediction, output
     targets_rainfall = dBZ_to_rfrate(pixel_to_dBZ(targets.detach().cpu().numpy()))
     model_rainfall = [dBZ_to_rfrate(pixel_to_dBZ(output.detach().cpu().numpy())) for output in model_outputs]
     ensemble_rainfall = dBZ_to_rfrate(pixel_to_dBZ(ensemble_prediction.detach().cpu().numpy()))
-    max_value = max(
-        inputs_rainfall.max(),
-        targets_rainfall.max(),
-        ensemble_rainfall.max(),
-        max(output.max() for output in model_rainfall),
-    )
 
-    cols = max(inputs_rainfall.shape[0], len(model_outputs), 1)
-    fig, axes = plt.subplots(nrows=4, ncols=cols, figsize=(cols * 3, 12))
-    row_names = ["Input", "Target", "Models", "Ensemble"]
-    for row_idx, name in enumerate(row_names):
-        axes[row_idx, 0].set_ylabel(name)
+    def channel_count(array):
+        return 1 if array.ndim == 2 else array.shape[0]
 
-    for idx in range(cols):
-        if idx < inputs_rainfall.shape[0]:
-            axes[0, idx].imshow(inputs_rainfall[idx], cmap="jet", vmin=0, vmax=max_value)
-        axes[0, idx].axis("off")
+    def channel(array, idx=0):
+        return array if array.ndim == 2 else array[idx]
 
-        if idx < targets_rainfall.shape[0]:
-            axes[1, idx].imshow(targets_rainfall[idx], cmap="jet", vmin=0, vmax=max_value)
-        axes[1, idx].axis("off")
+    rainfall_arrays = [inputs_rainfall, targets_rainfall, ensemble_rainfall, *model_rainfall]
+    max_value = max(float(np.nanmax(array)) for array in rainfall_arrays if array.size)
+    max_value = max(max_value, 1.0)
 
-        if idx < len(model_rainfall):
-            axes[2, idx].imshow(model_rainfall[idx][0], cmap="jet", vmin=0, vmax=max_value)
-        axes[2, idx].axis("off")
+    norm = Normalize(vmin=0, vmax=max_value)
+    cmap = "jet"
 
-        if idx == 0:
-            axes[3, idx].imshow(ensemble_rainfall[0], cmap="jet", vmin=0, vmax=max_value)
-        axes[3, idx].axis("off")
+    panels = []
+    input_count = channel_count(inputs_rainfall)
+    for idx in range(input_count):
+        panels.append((f"Input {idx + 1}", channel(inputs_rainfall, idx)))
 
-    fig.tight_layout()
+    target_count = channel_count(targets_rainfall)
+    for idx in range(target_count):
+        title = "Target" if target_count == 1 else f"Target {idx + 1}"
+        panels.append((title, channel(targets_rainfall, idx)))
+
+    for idx, output in enumerate(model_rainfall):
+        panels.append((f"Model {idx + 1} Prediction", channel(output)))
+
+    ensemble_count = channel_count(ensemble_rainfall)
+    for idx in range(ensemble_count):
+        title = "Ensemble Prediction" if ensemble_count == 1 else f"Ensemble {idx + 1}"
+        panels.append((title, channel(ensemble_rainfall, idx)))
+
+    cols = min(max(input_count, len(model_rainfall), 1), len(panels), 6)
+    rows = int(np.ceil(len(panels) / cols))
+    fig_width = max(cols * 2.4 + 1.2, 7.0)
+    fig_height = max(rows * 2.6, 3.0)
+    fig, axes = plt.subplots(nrows=rows, ncols=cols, figsize=(fig_width, fig_height), squeeze=False)
+    fig.subplots_adjust(left=0.04, right=0.88, bottom=0.06, top=0.9, wspace=0.08, hspace=0.28)
+
+    for ax, (title, array) in zip(axes.ravel(), panels):
+        ax.imshow(array, cmap=cmap, norm=norm)
+        ax.set_title(title, fontsize=9)
+        ax.axis("off")
+
+    for ax in axes.ravel()[len(panels):]:
+        ax.axis("off")
+
+    mappable = ScalarMappable(norm=norm, cmap=cmap)
+    mappable.set_array([])
+    cbar_ax = fig.add_axes([0.91, 0.13, 0.018, 0.72])
+    cbar = fig.colorbar(mappable, cax=cbar_ax)
+    cbar.set_label("Rainfall rate (mm/hr)", fontsize=10)
+    cbar.ax.tick_params(labelsize=9)
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path)
+    fig.savefig(output_path, dpi=150, facecolor="white")
     plt.close(fig)
 
 
